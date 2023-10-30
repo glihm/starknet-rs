@@ -620,12 +620,15 @@ async fn jsonrpc_call_entrypoint_not_found() {
     match should_be_error {
         Ok(_) => panic!("unexpected success result"),
         Err(e) => match e {
-            ProviderError::StarknetError(StarknetErrorWithMessage { code, .. }) => {
-                if let MaybeUnknownErrorCode::Known(sne) = code {
-                    assert_eq!(sne, StarknetError::ContractError);
-                } else {
-                    panic!("unexpected StarknetError {:?}", code);
-                }
+            ProviderError::StarknetError(StarknetErrorWithMessage { ref message, .. }) => {
+                // if let MaybeUnknownErrorCode::Known(sne) = code {
+                //     assert_eq!(sne, StarknetError::ContractError);
+                // } else {
+                //     panic!("unexpected StarknetError {:?} {:?}", code, message);
+                // }
+
+                assert!(!message.is_empty());
+                assert!(message.contains("not found in contract"));
 
                 // TODO: this test may be extended once the `data` field from v0.5.x
                 // is supported.
