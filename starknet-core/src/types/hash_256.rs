@@ -1,5 +1,5 @@
 use alloc::{
-    fmt::{Debug, Display, Formatter, Result as FmtResult},
+    fmt::{Debug, Display, Formatter, LowerHex, Result as FmtResult},
     format,
     str::FromStr,
 };
@@ -143,6 +143,12 @@ impl Debug for Hash256 {
 }
 
 impl Display for Hash256 {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
+        write!(f, "0x{}", hex::encode(self.inner))
+    }
+}
+
+impl LowerHex for Hash256 {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         write!(f, "0x{}", hex::encode(self.inner))
     }
